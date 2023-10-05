@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using OBilet.Core.Business.Abstract;
 using OBilet.Core.DTO.GetBusJourneys;
 using OBilet.Core.DTO.GetBusLocations;
+using OBilet.Core.DTO.GetSession;
 using OBilet.Integration.Services.Abstract;
 using OBilet.Integration.Services.Model.Base;
 using OBilet.Integration.Services.Model.Request;
@@ -53,9 +54,17 @@ namespace OBilet.Core.Business.Concrete
             return new GeneralResponse<BusJourneysResponseDto>(response);
         }
 
-        public Task<GeneralResponse<GetSessionResponse>> GetSessionAsync(GetSessionRequest request)
+        public async Task<GeneralResponse<SessionResponseDto>> GetSessionAsync(SessionRequestDto model)
         {
-            return _oBiletService.GetSessionAsync(request);
+            GetSessionRequest request = model.Adapt<GetSessionRequest>();
+            var session = await _oBiletService.GetSessionAsync(request);
+            if (!session.IsSuccess)
+            {
+                return new GeneralResponse<SessionResponseDto>();
+            }
+
+            SessionResponseDto response = session.Data.Adapt<SessionResponseDto>();
+            return new GeneralResponse<SessionResponseDto>(response);
         }
     }
 }
