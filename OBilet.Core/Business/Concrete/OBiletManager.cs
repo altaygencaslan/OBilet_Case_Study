@@ -1,6 +1,8 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using OBilet.Core.Business.Abstract;
+using OBilet.Core.DTO.Base;
 using OBilet.Core.DTO.GetBusJourneys;
 using OBilet.Core.DTO.GetBusLocations;
 using OBilet.Core.DTO.GetSession;
@@ -12,24 +14,60 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OBilet.Core.Business.Concrete
 {
     public class OBiletManager : IOBiletManager
     {
-        private readonly IOBiletService _oBiletService;
         private readonly ILogger<OBiletManager> _logger;
+        private readonly IOBiletService _oBiletService;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public OBiletManager(IOBiletService oBiletService, ILogger<OBiletManager> logger)
+        public OBiletManager(IOBiletService oBiletService, ILogger<OBiletManager> logger, IHttpContextAccessor contextAccessor)
         {
             _oBiletService = oBiletService;
             _logger = logger;
+            _contextAccessor = contextAccessor;
         }
 
-        public async Task<GeneralResponse<BusLocationsResponseDto>> GetBusLocationsAsync(BusLocationRequestDto model)
+        public async Task<SessionResponseDto> GetTokenFromSession(SessionRequestDto model)
         {
-            GetBusLocationsRequest request = model.Adapt<GetBusLocationsRequest>();
+            string tokenJSON = string.Empty;
+            _contextAccessor.HttpContext.Session.TryGetValue("token", out byte[] tokenByte);
+            if (tokenByte == null)
+            {
+                var obiletSession = await GetSessionAsync(model);
+                tokenJSON = JsonSerializer.Serialize(obiletSession.Data);
+                tokenByte = Encoding.UTF8.GetBytes(tokenJSON);
+
+                _contextAccessor.HttpContext.Session.Set("token", tokenByte);
+            }
+
+            tokenJSON = Encoding.UTF8.GetString(tokenByte);
+            SessionResponseDto session = JsonSerializer.Deserialize<SessionResponseDto>(tokenJSON);
+            return session;
+        }
+
+        public async Task<GeneralResponse<SessionResponseDto>> GetSessionAsync(SessionRequestDto model)
+        {
+            GetSessionRequest request = model.Adapt<GetSessionRequest>();
+            var sessionResponse = await _oBiletService.GetSessionAsync(request);
+            if (!sessionResponse.IsSuccess)
+            {
+                return new GeneralResponse<SessionResponseDto>();
+            }
+
+            SessionResponseDto response = sessionResponse.Data.Data.Adapt<SessionResponseDto>();
+            return new GeneralResponse<SessionResponseDto>(response);
+        }
+
+        public async Task<GeneralResponse<BusLocationsResponseDto>> GetBusLocationsAsync(GeneralRequestDto<BusLocationRequestDto> model)
+        {
+            GetBusLocationsRequest request = model.RequestItem.Adapt<GetBusLocationsRequest>();
+            request.DeviceSession = (await GetTokenFromSession(model.SessionRequest)).Adapt<DeviceSession>();
+
             var buslocations = await _oBiletService.GetBusLocationsAsync(request);
             if (!buslocations.IsSuccess)
             {
@@ -39,9 +77,11 @@ namespace OBilet.Core.Business.Concrete
             return buslocations.Data.Adapt<GeneralResponse<BusLocationsResponseDto>>();
         }
 
-        public async Task<GeneralResponse<BusJourneysResponseDto>> GetJourneysAsync(BusJourneysRequestDto model)
+        public async Task<GeneralResponse<BusJourneysResponseDto>> GetJourneysAsync(GeneralRequestDto<BusJourneysRequestDto> model)
         {
             GetBusJourneysRequest request = model.Adapt<GetBusJourneysRequest>();
+            request.DeviceSession = (await GetTokenFromSession(model.SessionRequest)).Adapt<DeviceSession>();
+
             var journeys = await _oBiletService.GetJourneysAsync(request);
             if (!journeys.IsSuccess)
             {
@@ -52,19 +92,6 @@ namespace OBilet.Core.Business.Concrete
             response.Data = journeys.Data.Adapt<BusJourneysData[]>();
 
             return new GeneralResponse<BusJourneysResponseDto>(response);
-        }
-
-        public async Task<GeneralResponse<SessionResponseDto>> GetSessionAsync(SessionRequestDto model)
-        {
-            GetSessionRequest request = model.Adapt<GetSessionRequest>();
-            var session = await _oBiletService.GetSessionAsync(request);
-            if (!session.IsSuccess)
-            {
-                return new GeneralResponse<SessionResponseDto>();
-            }
-
-            SessionResponseDto response = session.Data.Adapt<SessionResponseDto>();
-            return new GeneralResponse<SessionResponseDto>(response);
         }
     }
 }

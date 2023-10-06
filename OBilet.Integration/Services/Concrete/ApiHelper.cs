@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using OBilet.Integration.Services.Abstract;
+using OBilet.Integration.Services.Consts;
 using OBilet.Integration.Services.Model.Base;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,17 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace OBilet.Integration.Services.Concrete
 {
     public class ApiHelper : IApiHelper
     {
-        private readonly HttpClient _httpClient;
         private readonly ILogger<ApiHelper> _logger;
 
-        public ApiHelper(HttpClient httpClient, ILogger<ApiHelper> logger)
+        public ApiHelper(ILogger<ApiHelper> logger)
         {
-            _httpClient = httpClient;
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "JEcYcEMyantZV095WVc3G2JtVjNZbWx1");
             _logger = logger;
         }
 
@@ -27,20 +26,25 @@ namespace OBilet.Integration.Services.Concrete
         {
             try
             {
-                _logger.LogInformation($"Post start with Request {JsonSerializer.Serialize(data)}");
+                using (var _httpClient = new HttpClient())
+                {
+                    _httpClient.DefaultRequestHeaders.Add("Authorization", ApiConst.KeyVal);
 
-                _httpClient.BaseAddress = new Uri(baseUrl);
+                    _logger.LogInformation($"Post start with Request {JsonSerializer.Serialize(data)}");
 
-                var serializedObject = JsonSerializer.Serialize(data);
-                var content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+                    _httpClient.BaseAddress = new Uri(baseUrl);
 
-                var response = await _httpClient.PostAsync(endpointUrl, content);
-                var responseSTR = await response.Content.ReadAsStringAsync();
+                    var serializedObject = JsonSerializer.Serialize(data);
+                    var content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
 
-                T responseData = JsonSerializer.Deserialize<T>(responseSTR);
+                    var response = await _httpClient.PostAsync(endpointUrl, content);
+                    var responseSTR = await response.Content.ReadAsStringAsync();
 
-                _logger.LogInformation($"Post end with Request {JsonSerializer.Serialize(data)}, Response: {JsonSerializer.Serialize(responseData)}");
-                return new GeneralResponse<T>(responseData);
+                    T responseData = JsonSerializer.Deserialize<T>(responseSTR, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
+
+                    _logger.LogInformation($"Post end with Request {JsonSerializer.Serialize(data)}, Response: {JsonSerializer.Serialize(responseData)}");
+                    return new GeneralResponse<T>(responseData);
+                }
             }
             catch (Exception ex)
             {

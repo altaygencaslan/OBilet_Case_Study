@@ -1,4 +1,5 @@
-﻿using OBilet.Core.DTO.GetBusJourneys;
+﻿using OBilet.Core.DTO.Base;
+using OBilet.Core.DTO.GetBusJourneys;
 using OBilet.Core.DTO.GetBusLocations;
 using OBilet.Core.DTO.GetSession;
 using OBilet.Integration.Services.Model.Base;
@@ -15,7 +16,7 @@ namespace OBilet.Core.Business.Abstract
     public interface IOBiletManager
     {
         Task<GeneralResponse<SessionResponseDto>> GetSessionAsync(SessionRequestDto model);
-        Task<GeneralResponse<BusLocationsResponseDto>> GetBusLocationsAsync(BusLocationRequestDto model);
-        Task<GeneralResponse<BusJourneysResponseDto>> GetJourneysAsync(BusJourneysRequestDto model);
+        Task<GeneralResponse<BusLocationsResponseDto>> GetBusLocationsAsync(GeneralRequestDto<BusLocationRequestDto> model);
+        Task<GeneralResponse<BusJourneysResponseDto>> GetJourneysAsync(GeneralRequestDto<BusJourneysRequestDto> model);
     }
 }

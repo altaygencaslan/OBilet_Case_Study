@@ -1,3 +1,5 @@
+using OBilet.Core.Business.Abstract;
+using OBilet.Core.Business.Concrete;
 using OBilet.Integration.Services.Abstract;
 using OBilet.Integration.Services.Concrete;
 
@@ -9,11 +11,21 @@ builder.Logging.AddConsole();
 //Logging
 
 //Dependencies
-builder.Services.AddScoped<HttpClient, HttpClient>();
 builder.Services.AddScoped<IApiHelper, ApiHelper>();
 builder.Services.AddScoped<IOBiletService, OBiletService>();
+builder.Services.AddScoped<IOBiletManager, OBiletManager>();
 //Dependencies
 
+//ClientSide Caching
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".obilet.casestudy.session";
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.IsEssential = true;
+});
+//ClientSide Caching
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -30,6 +42,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

@@ -11,7 +11,7 @@ namespace OBilet.Integration.Services.Model.Base
     public class BaseApiResponse<T>
     {
         [JsonPropertyName("status")]
-        public ResponseStatus Status { get; set; }
+        public string Status { get; set; }
 
         public T Data { get; set; }
 

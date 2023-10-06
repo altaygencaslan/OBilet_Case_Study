@@ -8,17 +8,17 @@ namespace OBilet.Core.DTO.GetSession
 {
     public class SessionRequestDto
     {
-        public Connection Connection { get; set; }
-        public Browser Browser { get; set; }
+        public ConnectionDto Connection { get; set; }
+        public BrowserDto Browser { get; set; }
     }
 
-    public class Connection
+    public class ConnectionDto
     {
         public string IpAddress { get; set; }
         public string Port { get; set; }
     }
 
-    public class Browser
+    public class BrowserDto
     {
         public string Name { get; set; }
         public string Version { get; set; }
