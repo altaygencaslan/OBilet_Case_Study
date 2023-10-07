@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OBilet.Core.Business.Abstract;
 using OBilet.Core.DTO.Base;
@@ -18,11 +19,13 @@ namespace OBilet.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IOBiletManager _oBiletManager;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public HomeController(ILogger<HomeController> logger, IOBiletManager oBiletManager)
+        public HomeController(ILogger<HomeController> logger, IOBiletManager oBiletManager, IHttpContextAccessor contextAccessor)
         {
             _logger = logger;
             _oBiletManager = oBiletManager;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<IActionResult> IndexAsync(int? _originId, int? _destinationId, DateTime? _departureDate)
@@ -42,30 +45,57 @@ namespace OBilet.Web.Controllers
                 return View();
             }
 
-            int originId = _originId.HasValue ? _originId.Value : busLocationsResponse.Data.FirstOrDefault(f => f.Rank == 1).Id;
-            int destinationId = _destinationId.HasValue ? _destinationId.Value : busLocationsResponse.Data.FirstOrDefault(f => f.Rank == 3).Id;
-            string departureDate = _departureDate.HasValue ? _departureDate.Value.ToString("dd/MM/yyyy") : DateTime.Now.ToString("dd/MM/yyyy");
+            var model = GetFromCacheOrParam(_originId, _destinationId, _departureDate, busLocationsResponse.Data);
+            model.OriginLocations = busLocationsResponse.Data
+                                                        //.Where(w => w.CountryId == 8)
+                                                        .Select(s => new SelectListItem
+                                                        {
+                                                            Value = s.Id.ToString(),
+                                                            Text = s.LongName,
+                                                            Selected = s.Id == model.OriginId
+                                                        })
+                                                        .ToArray();
 
-            var model = new BusLocationSearchModel
-            {
-                DepartureDate = departureDate,
-                OriginId = originId,
-                DestionationId = destinationId,
-                OriginLocations = busLocationsResponse.Data.Where(w => w.CountryId == 8).Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.LongName,
-                    Selected = s.Id == originId
-                }).ToArray(),
-                DestinationLocations = busLocationsResponse.Data.Where(w => w.CountryId == 8).Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.LongName,
-                    Selected = s.Id == destinationId
-                }).ToArray(),
-            };
+            model.DestinationLocations = busLocationsResponse.Data
+                                                             //.Where(w => w.CountryId == 8)
+                                                             .Select(s => new SelectListItem
+                                                             {
+                                                                 Value = s.Id.ToString(),
+                                                                 Text = s.LongName,
+                                                                 Selected = s.Id == model.DestinationId
+                                                             })
+                                                             .ToArray();
 
             return View(model);
+        }
+
+        private BusLocationSearchModel GetFromCacheOrParam(int? _originId, int? _destinationId, DateTime? _departureDate, BusLocationsResponseDto[] _busLocations)
+        {
+            BusLocationSearchModel searchModel = new BusLocationSearchModel();
+
+            if (_destinationId.HasValue && _originId.HasValue && _departureDate.HasValue)
+            {
+                searchModel.OriginId = _destinationId.Value;
+                searchModel.DestinationId = _originId.Value;
+                searchModel.DepartureDate = _departureDate.Value.ToString("dd.MM.yyyy");
+            }
+            else
+            {
+                var searchModelJSON = _contextAccessor.HttpContext.Session.GetString("BusLocationSearchModel");
+                if (!string.IsNullOrEmpty(searchModelJSON))
+                {
+                    searchModel = JsonSerializer.Deserialize<BusLocationSearchModel>(searchModelJSON);
+                }
+                else
+                {
+                    searchModel.OriginId = _busLocations.FirstOrDefault(f => f.Rank == 1)?.Id ?? 0;
+                    searchModel.DestinationId = _busLocations.FirstOrDefault(f => f.Rank == 3)?.Id ?? 0;
+                    searchModel.DepartureDate = DateTime.Now.AddDays(1).ToString("dd.MM.yyyy");
+
+                }
+            }
+
+            return searchModel;
         }
 
         [HttpPost]
@@ -73,10 +103,13 @@ namespace OBilet.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                string searchModel = JsonSerializer.Serialize(model);
+                _contextAccessor.HttpContext.Session.SetString("BusLocationSearchModel", searchModel);
+
                 return RedirectToAction("JourneyIndex", new BusJourneysRequestScreenDto
                 {
                     OriginId = model.OriginId,
-                    DestinationId = model.DestionationId,
+                    DestinationId = model.DestinationId,
                     DepartureDate = model.DepartureDate,
                 });
             }
