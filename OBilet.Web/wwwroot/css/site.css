@@ -1,18 +1,194 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #F8F8F8;
+}
+
+.headerTheme {
+    height: 40pt !important;
+    background-color: #2F4EB4 !important;
+}
+
+
+.headerTheme-Journey {
+    height: 72pt !important;
+    background-color: #2F4EB4 !important;
+}
+
+.containerTheme {
+    margin-top: 67pt;
+}
+
+.containerTheme-journey {
+    margin-top: 80pt;
+}
+
+.mainTheme {
+    background-color: #2F4EB4;
+}
+
+.cardTheme {
+    background-color: #FFFFFF !important;
+    border-color: #0000001A !important;
+}
+
+.cardTheme-journey {
+    background-color: #FFFFFF !important;
+    border-color: #0000001A !important;
+    border-radius: 5pt;
+}
+
+.maintext-card {
+    color: #2F4EB4 !important;
+    font-family: Roboto, Medium;
+    font-size: 14pt;
+    text-align: left;
+}
+
+.subtext-card {
+    color: #5D686E !important;
+    font-family: Roboto, Reqular;
+    font-size: 15pt;
+    text-align: left;
+    border: none;
+    padding: unset;
+    width: 180pt !important;
+}
+
+.subtext-footer {
+    color: #5D686E !important;
+    font-family: Roboto, Reqular;
+    font-size: 12pt;
+    text-align: left;
+}
+
+.iconTheme {
+    color: #9D9D9C !important;
+    font-size: 24pt;
+}
+
+.iconTheme-Journey {
+    color: white !important;
+    font-size: 24pt;
+}
+
+.btn-fast {
+    font-family: Roboto, Regular;
+    font-size: 12pt;
+    text-align: center;
+    width: 56pt;
+    height: 24pt;
+    border-color: #5D686E;
+    border-width: 0.9pt;
+    margin: 2pt 2pt 2pt 2pt;
+}
+
+.btn-fast-today {
+    font-family: Roboto, Regular;
+    font-size: 12pt;
+    text-align: center;
+    width: 56pt;
+    height: 24pt;
+    border-color: #5D686E;
+    border-width: 0.9pt;
+    margin: 2pt 2pt 2pt 2pt;
+    border-radius: 0pt;
+    background-color: #5D686E;
+    color: white;
+}
+
+.btn-fast-tomorrow {
+    font-family: Roboto, Regular;
+    font-size: 12pt;
+    text-align: center;
+    width: 56pt;
+    height: 24pt;
+    border-color: #5D686E;
+    border-width: 0.9pt;
+    margin: 2pt 2pt 2pt 2pt;
+    border-radius: 0pt;
+    background-color: white;
+    color: #5D686E;
+}
+
+.headermaintext-journey {
+    vertical-align: central;
+    font-family: Open Sans, Semibold;
+    font-size: 14pt;
+    color: white;
+    text-align: left;
+}
+
+.headersubtext-journey {
+    vertical-align: central;
+    font-family: Open Sans, Semibold;
+    font-size: 12pt;
+    color: white;
+    text-align: left;
+}
+
+.badge-currency {
+    border-radius: 6pt;
+    font-size: 14pt;
+    font-family: Open Sans, Semibold;
+    align-content: center;
+    align-items: center;
+    vertical-align: central;
+    color: white;
+    padding: 3pt 4pt;
+    height: 26pt;
+    width: 73pt;
+}
+
+.cardtitle-journey {
+    color: #3640B1;
+    font-family: Open Sans, Regular;
+    font-size: 9pt;
+    text-align: center;
+}
+
+.carddeparture-journey {
+    color: #192289;
+    font-family: Open Sans, Semibold;
+    font-size: 15pt;
+    text-align: left;
+}
+
+.cardorigitntodestination-journey {
+    color: #083145;
+    font-family: Open Sans, Regular;
+    font-size: 12pt;
+    text-align: left;
+}
+
+.change-departure {
+    z-index: 999999 !important;
+    position:relative;
+    margin-top: -15pt;
+    margin-bottom: -15pt;
+    margin-right:20pt;
+}
+
+.btn-change-departuredate {
+    height: 28pt;
+    width: 28pt;
+    z-index: 999999 !important;
+    position: relative;
+    border: 1pt solid #707070;
+    border-radius: 100pt;
+    color: #707070;
 }
