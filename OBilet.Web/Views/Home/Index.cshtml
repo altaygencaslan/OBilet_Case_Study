@@ -1,18 +1,100 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Index</h1>
+@section header{
+    <p>&nbsp;</p>
+}
 
-    <button type="button" class="btn btn-primary">Primary</button>
-    <button type="button" class="btn btn-secondary">Secondary</button>
-    <button type="button" class="btn btn-success">Success</button>
-    <button type="button" class="btn btn-danger">Danger</button>
-    <button type="button" class="btn btn-warning">Warning</button>
-    <button type="button" class="btn btn-info">Info</button>
-    <button type="button" class="btn btn-light">Light</button>
-    <button type="button" class="btn btn-dark">Dark</button>
+<div class="container">
+    <div class="card cardTheme">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <i class="fa fa-map-marker iconTheme" aria-hidden="true"></i>
+                    </div>
+                </div>
 
-    <button type="button" class="btn btn-link">Link</button>
+                <div class="col-sm-11">
+                    <div class="row maintext-card">
+                        Nereden
+                    </div>
+                    <div class="row">
+                        <input type="text" class="subtext-card" value="İstanbul Avrupa" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-end change-departure">
+        <button type="button" class="btn-change-departuredate">
+            <i class="fa-solid fa-retweet"></i>
+        </button>
+    </div>
+    <div class="card cardTheme mt-1">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <i class="fa fa-location-dot iconTheme" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="col-sm-11">
+                    <div class="row maintext-card">
+                        Nereye
+                    </div>
+                    <div class="row">
+                        <input type="text" class="subtext-card" value="Ankara" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card cardTheme mt-5">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <i class="fa fa-calendar-days iconTheme" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="col-sm-9">
+                    <div class="row maintext-card">
+                        Tarih
+                    </div>
+                    <div class="row">
+                        <input type="datetime" class="subtext-card" value="1 Nisan 2018 Pazar" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="row">
+                        <button type="button" class="btn-fast-today">Bugün</button>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-fast-tomorrow">Yarın</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 mx-auto d-grid gap-2 mt-5">
+        <button type="button" class="btn btn-primary btn-lg">Bileti Bul</button>
+    </div>
+
+
+    @section footer{
+
+        <p class="subtext-footer">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+        </p>
+    }
 </div>

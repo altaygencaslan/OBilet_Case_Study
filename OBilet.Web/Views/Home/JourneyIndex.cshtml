@@ -1,6 +1,66 @@
 ﻿@{
-    ViewData["Title"] = "Journey Index";
+    Layout = "_JourneyLayout";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Journey Index</p>
+@section header{
+    <div class="row mx-3">
+        <div class="col-sm-1">
+            <i class="fa-solid fa-arrow-left iconTheme-Journey"></i>
+        </div>
+        <div class="col-sm-11 headermaintext-journey">
+                İstanbul Avrupa - Ankara
+        </div>
+    </div>
+    <div class="row mx-3">
+        <div class="col-sm-1">
+            &nbsp;
+        </div>
+        <div class="col-sm-11 headersubtext-journey">
+                25 Ekim Perşembe
+        </div>
+    </div>
+}
+
+
+<div class="container mt-5">
+    <div class="card cardTheme-journey mt-5">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="row cardtitle-journey">
+                        <div class="col-sm-2">
+                            KALKIŞ
+                        </div>
+                        <div class="col-sm-1">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-2">
+                            VARIŞ
+                        </div>
+                    </div>                    
+                    <div class="row carddeparture-journey">
+                        <div class="col-sm-2">
+                            09:30
+                        </div>
+                        <div class="col-sm-1">
+                            >
+                        </div>
+                        <div class="col-sm-2">
+                            15:30
+                        </div>
+                    </div>
+                    <div class="row cardorigitntodestination-journey">
+                        <div class="col">
+                            Esenler Otogarı - Ankara Aşti Otogar
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="bg-danger badge-currency">
+                        75,00 TL
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
