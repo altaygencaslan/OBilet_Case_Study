@@ -8,7 +8,24 @@ namespace OBilet.Integration.Services.Model.Base
 {
     public class GeneralResponse<T>
     {
-        public bool IsSuccess { get; set; }
+        private bool _success;
+        public bool IsSuccess
+        {
+            get
+            {
+                if (!_success)
+                {
+                    _success = Data != null;
+                }
+
+                return _success;
+            }
+            set
+            {
+                _success = value;
+            }
+        }
+
         public T Data { get; set; }
 
         public GeneralResponse(T data)

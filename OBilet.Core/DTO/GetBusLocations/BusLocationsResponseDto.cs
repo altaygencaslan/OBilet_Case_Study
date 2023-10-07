@@ -10,9 +10,11 @@ namespace OBilet.Core.DTO.GetBusLocations
     {
         public int Id { get; set; } //Seçim için
         public string LongName { get; set; } //UI için
-        public int Rank { get; set; } //Sıralam için
+        public int? Rank { get; set; } //Sıralam için
         public string Keywords { get; set; } //Arama için
         public bool ShowCountry { get; set; }
+
+        public int CountryId { get; set; }
         public string CountryName { get; set; } //ShowCountry = true ise kullanılacak
     }
 }

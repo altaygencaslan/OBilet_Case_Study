@@ -14,50 +14,50 @@ namespace OBilet.Integration.Services.Model.Response
 
     public class GetBusJourneysResponseData
     {
-        [JsonPropertyName("available-seats")]
-        public int AvailableSeats { get; set; }
+        //[JsonPropertyName("available-seats")]
+        //public int AvailableSeats { get; set; }
 
-        [JsonPropertyName("bus-type")]
-        public string BusType { get; set; }
+        //[JsonPropertyName("bus-type")]
+        //public string BusType { get; set; }
 
-        [JsonPropertyName("cancellation-offset")]
-        public int? CancellationOffset { get; set; }
+        //[JsonPropertyName("cancellation-offset")]
+        //public int? CancellationOffset { get; set; }
 
-        [JsonPropertyName("destination-location")]
-        public string DestinationLocation { get; set; }
+        //[JsonPropertyName("destination-location")]
+        //public string DestinationLocation { get; set; }
 
-        [JsonPropertyName("destination-location-id")]
-        public int DestinationLocationId { get; set; }
+        //[JsonPropertyName("destination-location-id")]
+        //public int DestinationLocationId { get; set; }
 
-        [JsonPropertyName("disable-sales-without-gov-id")]
-        public bool DisableSalesWithoutGovId { get; set; }
+        //[JsonPropertyName("disable-sales-without-gov-id")]
+        //public bool DisableSalesWithoutGovId { get; set; }
 
-        [JsonPropertyName("display-offset")]
-        public TimeSpan DisplayOffset { get; set; }
+        //[JsonPropertyName("display-offset")]
+        //public TimeSpan DisplayOffset { get; set; }
 
-        [JsonPropertyName("features")]
-        public Feature[] Features { get; set; }
+        //[JsonPropertyName("features")]
+        //public Feature[] Features { get; set; }
 
-        [JsonPropertyName("has-bus-shuttle")]
-        public bool HasBusShuttle { get; set; }
+        //[JsonPropertyName("has-bus-shuttle")]
+        //public bool HasBusShuttle { get; set; }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonPropertyName("is-active")]
-        public bool IsActive { get; set; }
+        //[JsonPropertyName("is-active")]
+        //public bool IsActive { get; set; }
 
-        [JsonPropertyName("is-promoted")]
-        public bool IsPromoted { get; set; }
+        //[JsonPropertyName("is-promoted")]
+        //public bool IsPromoted { get; set; }
 
         [JsonPropertyName("journey")]
         public Journey Journey { get; set; }
 
-        [JsonPropertyName("origin-location")]
-        public string OriginLocation { get; set; }
+        //[JsonPropertyName("origin-location")]
+        //public string OriginLocation { get; set; }
 
-        [JsonPropertyName("origin-location-id")]
-        public int OriginLocationId { get; set; }
+        //[JsonPropertyName("origin-location-id")]
+        //public int OriginLocationId { get; set; }
 
         [JsonPropertyName("partner-id")]
         public int PartnerId { get; set; }
@@ -65,14 +65,17 @@ namespace OBilet.Integration.Services.Model.Response
         [JsonPropertyName("partner-name")]
         public string PartnerName { get; set; }
 
-        [JsonPropertyName("partner-rating")]
-        public decimal? PartnerRating { get; set; }
+        //[JsonPropertyName("partner-rating")]
+        //public decimal? PartnerRating { get; set; }
 
-        [JsonPropertyName("route-id")]
-        public int RouteId { get; set; }
+        //[JsonPropertyName("route-id")]
+        //public int RouteId { get; set; }
 
-        [JsonPropertyName("total-seats")]
-        public int TotalSeats { get; set; }
+        //[JsonPropertyName("total-seats")]
+        //public int TotalSeats { get; set; }
+
+        [JsonPropertyName("rank")]
+        public int Rank { get; set; }
     }
 
     public class Feature
@@ -104,53 +107,53 @@ namespace OBilet.Integration.Services.Model.Response
         [JsonPropertyName("arrival")]
         public DateTime Arrival { get; set; }
 
-        [JsonPropertyName("available")]
-        public string Available { get; set; }
+        //[JsonPropertyName("available")]
+        //public string Available { get; set; }
 
-        [JsonPropertyName("booking")]
-        public string Booking { get; set; }
+        //[JsonPropertyName("booking")]
+        //public string Booking { get; set; }
 
-        [JsonPropertyName("bus-name")]
-        public string BusName { get; set; }
+        //[JsonPropertyName("bus-name")]
+        //public string BusName { get; set; }
 
-        [JsonPropertyName("code")]
-        public string Code { get; set; }
+        //[JsonPropertyName("code")]
+        //public string Code { get; set; }
 
-        [JsonPropertyName("currency")]
-        public string Currency { get; set; }
+        //[JsonPropertyName("currency")]
+        //public string Currency { get; set; }
 
         [JsonPropertyName("departure")]
         public DateTime Departure { get; set; }
 
-        [JsonPropertyName("description")]
-        public string Description { get; set; }
+        //[JsonPropertyName("description")]
+        //public string Description { get; set; }
 
         [JsonPropertyName("destination")]
         public string Destination { get; set; }
 
-        [JsonPropertyName("duration")]
-        public TimeSpan Duration { get; set; }
+        //[JsonPropertyName("duration")]
+        //public TimeSpan Duration { get; set; }
 
-        [JsonPropertyName("features")]
-        public string[] Features { get; set; }
+        //[JsonPropertyName("features")]
+        //public string[] Features { get; set; }
 
         [JsonPropertyName("internet-price")]
-        public int InternetPrice { get; set; }
+        public decimal InternetPrice { get; set; }
 
-        [JsonPropertyName("kind")]
-        public string Kind { get; set; }
+        //[JsonPropertyName("kind")]
+        //public string Kind { get; set; }
 
         [JsonPropertyName("origin")]
         public string Origin { get; set; }
 
         [JsonPropertyName("original-price")]
-        public int OriginalPrice { get; set; }
+        public decimal OriginalPrice { get; set; }
 
-        [JsonPropertyName("policy")]
-        public Policy Policy { get; set; }
+        //[JsonPropertyName("policy")]
+        //public Policy Policy { get; set; }
 
-        [JsonPropertyName("stops")]
-        public Stop[] Stops { get; set; }
+        //[JsonPropertyName("stops")]
+        //public Stop[] Stops { get; set; }
     }
 
     public class Policy

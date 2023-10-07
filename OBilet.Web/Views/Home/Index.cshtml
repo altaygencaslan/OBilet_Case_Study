@@ -1,96 +1,102 @@
-﻿@{
+﻿@model BusLocationSearchModel
+@{
     Layout = "_Layout";
 }
 
 @section header{
-    <p>&nbsp;</p>
 }
 
 <div class="container">
-    <div class="card cardTheme">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-1">
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <i class="fa fa-map-marker iconTheme" aria-hidden="true"></i>
+    <form method="post">
+        <div class="card cardTheme">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <i class="fa fa-map-marker iconTheme" aria-hidden="true"></i>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-sm-11">
-                    <div class="row maintext-card">
-                        Nereden
-                    </div>
-                    <div class="row">
-                        <input type="text" class="subtext-card" value="İstanbul Avrupa" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="text-end change-departure">
-        <button type="button" class="btn-change-departuredate">
-            <i class="fa-solid fa-retweet"></i>
-        </button>
-    </div>
-    <div class="card cardTheme mt-1">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-1">
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <i class="fa fa-location-dot iconTheme" aria-hidden="true"></i>
-                    </div>
-                </div>
-
-                <div class="col-sm-11">
-                    <div class="row maintext-card">
-                        Nereye
-                    </div>
-                    <div class="row">
-                        <input type="text" class="subtext-card" value="Ankara" />
+                    <div class="col-sm-11">
+                        <div class="row maintext-card">
+                            Nereden
+                        </div>
+                        <div class="row">
+                            <select class="js-example-basic-single subtext-card" id="ddlOrigin" asp-for="OriginId" asp-items="Model.OriginLocations"></select>
+                            <input type="hidden" id="hdnOriginOldId" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="text-end change-departure">
+            <button type="button" id="btnChange" class="btn-change-departuredate">
+                <i class="fa-solid fa-retweet"></i>
+            </button>
+        </div>
+        <div class="card cardTheme mt-1">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <i class="fa fa-location-dot iconTheme" aria-hidden="true"></i>
+                        </div>
+                    </div>
 
-    <div class="card cardTheme mt-5">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-1">
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <i class="fa fa-calendar-days iconTheme" aria-hidden="true"></i>
-                    </div>
-                </div>
-
-                <div class="col-sm-9">
-                    <div class="row maintext-card">
-                        Tarih
-                    </div>
-                    <div class="row">
-                        <input type="datetime" class="subtext-card" value="1 Nisan 2018 Pazar" />
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="row">
-                        <button type="button" class="btn-fast-today">Bugün</button>
-                    </div>
-                    <div class="row">
-                        <button type="button" class="btn btn-fast-tomorrow">Yarın</button>
+                    <div class="col-sm-11">
+                        <div class="row maintext-card">
+                            Nereye
+                        </div>
+                        <div class="row">
+                            <select class="js-example-basic-single subtext-card" id="ddlDestination" asp-for="DestionationId" asp-items="Model.DestinationLocations"></select>
+                            <input type="hidden" id="hdnDestinationOldId" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-sm-6 mx-auto d-grid gap-2 mt-5">
-        <button type="button" class="btn btn-primary btn-lg">Bileti Bul</button>
-    </div>
+        <div class="card cardTheme mt-5">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <i class="fa fa-calendar-days iconTheme" aria-hidden="true"></i>
+                        </div>
+                    </div>
 
+                    <div class="col-sm-9">
+                        <div class="row maintext-card">
+                            Tarih
+                        </div>
+                        <div class="row">
+                            <input type="datetime" id="dtDepartureDate" class="datepicker subtext-card" asp-for="DepartureDate" />
+                        </div>
+                    </div>
 
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <button type="button" id="btnToday" class="btn-fast-today">Bugün</button>
+                        </div>
+                        <div class="row">
+                            <button type="button" id="btnTomorrow" class="btn btn-fast-tomorrow">Yarın</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 mx-auto d-grid gap-2 mt-5">
+            <button type="submit" id="btnSearchTicket" class="btn btn-primary btn-lg">Bileti Bul</button>
+        </div>
+
+        <input type="hidden" id="hdnFlag" value="0" />
+        <input type="hidden" asp-for="OriginLocations" value="@Model.OriginLocations" />
+        <input type="hidden" asp-for="DestinationLocations" value="@Model.DestinationLocations" />
+    </form>
     @section footer{
 
         <p class="subtext-footer">
@@ -98,3 +104,96 @@
         </p>
     }
 </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+
+            var NotBeforeToday = function (date) {
+                var now = new Date(); //this gets the current date and time
+
+                if (date.getDate() >= now.getDate() ||
+                    date.getMonth() > now.getMonth() ||
+                    date.getFullYear() > now.getFullYear())
+                    return [true, ""];
+
+                return [false, ""];
+            }
+            $("#dtDepartureDate").datepicker({
+                dateFormat: "dd.mm.yy",
+                beforeShowDay: NotBeforeToday,
+                changemonth: true,
+                changeyear: true
+            });
+
+
+            $('#btnToday').click(() => {
+                $("#dtDepartureDate").datepicker('setDate', '0');
+
+            });
+
+            $('#btnTomorrow').click(() => {
+                $("#dtDepartureDate").datepicker('setDate', '1');
+            });
+
+            var flag = $('#hdnFlag');
+
+            var origin = $('#ddlOrigin');
+            var destination = $('#ddlDestination');
+
+            var hdnOriginOld = $('#hdnOriginOldId');
+            var hdnDestinationOld = $('#hdnDestinationOldId');
+            hdnOriginOld.val(origin.val());
+            hdnDestinationOld.val(destination.val());
+
+            $('#btnChange').click(() => {
+
+                var originId = origin.val();
+                var destinationId = destination.val();
+
+                origin.val(destinationId).change();
+                destination.val(originId).change();
+            });
+
+            $('#ddlOrigin').change(() => {
+                if (flag.val() == 1) {
+                    flag.val(0);
+                    return;
+                }
+
+                var originId = origin.val();
+                var originOldId = hdnOriginOld.val();
+                var destinationOldId = hdnDestinationOld.val();
+
+                if (originId == destinationOldId) {
+                    flag.val(1);
+                    destination.val(originOldId).change();
+                }
+
+                hdnOriginOld.val(origin.val());
+                hdnDestinationOld.val(destination.val());
+            });
+
+            $('#ddlDestination').change(() => {
+                if (flag.val() == 1) {
+                    flag.val(0);
+                    return;
+                }
+
+                var destinationId = destination.val();
+                var destinationOldId = hdnDestinationOld.val();
+                var originOldId = hdnOriginOld.val();
+
+                if (destinationId == originOldId) {
+                    flag.val(1);
+                    origin.val(destinationOldId).change();
+                }
+
+                hdnOriginOld.val(origin.val());
+                hdnDestinationOld.val(destination.val());
+
+            });
+        });
+    </script>
+}

@@ -16,7 +16,7 @@ namespace OBilet.Core.Business.Abstract
     public interface IOBiletManager
     {
         Task<GeneralResponse<SessionResponseDto>> GetSessionAsync(SessionRequestDto model);
-        Task<GeneralResponse<BusLocationsResponseDto>> GetBusLocationsAsync(GeneralRequestDto<BusLocationRequestDto> model);
-        Task<GeneralResponse<BusJourneysResponseDto>> GetJourneysAsync(GeneralRequestDto<BusJourneysRequestDto> model);
+        Task<GeneralResponse<BusLocationsResponseDto[]>> GetBusLocationsAsync(GeneralRequestDto<BusLocationRequestDto> model);
+        Task<GeneralResponse<BusJourneysResponseDto[]>> GetJourneysAsync(GeneralRequestDto<BusJourneysRequestDto> model);
     }
 }

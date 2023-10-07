@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OBilet.Integration.Services.Model.Response
 {
-    public class GetBusLocationsResponse : BaseApiResponse<GetBusLocationsResponseData>
+    public class GetBusLocationsResponse : BaseApiResponse<GetBusLocationsResponseData[]>
     {
     }
 
@@ -39,7 +39,7 @@ namespace OBilet.Integration.Services.Model.Response
         //public string WeatherCode { get; set; }
 
         [JsonPropertyName("rank")]
-        public int Rank { get; set; }
+        public int? Rank { get; set; }
 
         //[JsonPropertyName("reference-code")]
         //public string ReferenceCode { get; set; }
@@ -50,8 +50,8 @@ namespace OBilet.Integration.Services.Model.Response
         //[JsonPropertyName("reference-country")]
         //public string ReferenceCountry { get; set; }
 
-        //[JsonPropertyName("country-id")]
-        //public int CountryId { get; set; }
+        [JsonPropertyName("country-id")]
+        public int CountryId { get; set; }
 
         [JsonPropertyName("keywords")]
         public string Keywords { get; set; }
