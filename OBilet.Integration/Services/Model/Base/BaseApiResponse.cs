@@ -13,6 +13,7 @@ namespace OBilet.Integration.Services.Model.Base
         [JsonPropertyName("status")]
         public string Status { get; set; }
 
+        [JsonPropertyName("data")]
         public T Data { get; set; }
 
         [JsonPropertyName("message")]

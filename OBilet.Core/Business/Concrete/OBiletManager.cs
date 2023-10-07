@@ -63,35 +63,35 @@ namespace OBilet.Core.Business.Concrete
             return new GeneralResponse<SessionResponseDto>(response);
         }
 
-        public async Task<GeneralResponse<BusLocationsResponseDto>> GetBusLocationsAsync(GeneralRequestDto<BusLocationRequestDto> model)
+        public async Task<GeneralResponse<BusLocationsResponseDto[]>> GetBusLocationsAsync(GeneralRequestDto<BusLocationRequestDto> model)
         {
             GetBusLocationsRequest request = model.RequestItem.Adapt<GetBusLocationsRequest>();
             request.DeviceSession = (await GetTokenFromSession(model.SessionRequest)).Adapt<DeviceSession>();
 
-            var buslocations = await _oBiletService.GetBusLocationsAsync(request);
-            if (!buslocations.IsSuccess)
+            var buslocationsResponse = await _oBiletService.GetBusLocationsAsync(request);
+            if (!buslocationsResponse.IsSuccess)
             {
-                return new GeneralResponse<BusLocationsResponseDto>();
+                return new GeneralResponse<BusLocationsResponseDto[]>();
             }
 
-            return buslocations.Data.Adapt<GeneralResponse<BusLocationsResponseDto>>();
+            return buslocationsResponse.Data.Adapt<GeneralResponse<BusLocationsResponseDto[]>>();
         }
 
-        public async Task<GeneralResponse<BusJourneysResponseDto>> GetJourneysAsync(GeneralRequestDto<BusJourneysRequestDto> model)
+        public async Task<GeneralResponse<BusJourneysResponseDto[]>> GetJourneysAsync(GeneralRequestDto<BusJourneysRequestDto> model)
         {
-            GetBusJourneysRequest request = model.Adapt<GetBusJourneysRequest>();
+            GetBusJourneysRequest request = new GetBusJourneysRequest();
+            request.Data = model.RequestItem.Adapt<GetBusJourneysRequestData>();
             request.DeviceSession = (await GetTokenFromSession(model.SessionRequest)).Adapt<DeviceSession>();
 
-            var journeys = await _oBiletService.GetJourneysAsync(request);
-            if (!journeys.IsSuccess)
+            var journeysResponse = await _oBiletService.GetJourneysAsync(request);
+            if (!journeysResponse.IsSuccess)
             {
-                return new GeneralResponse<BusJourneysResponseDto>();
+                return new GeneralResponse<BusJourneysResponseDto[]>();
             }
 
-            BusJourneysResponseDto response = model.Adapt<BusJourneysResponseDto>();
-            response.Data = journeys.Data.Adapt<BusJourneysData[]>();
+            GeneralResponse<BusJourneysResponseDto[]> response = journeysResponse.Data.Adapt<GeneralResponse<BusJourneysResponseDto[]>>();
 
-            return new GeneralResponse<BusJourneysResponseDto>(response);
+            return response;
         }
     }
 }

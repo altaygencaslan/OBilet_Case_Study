@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 
 namespace OBilet.Core.DTO.GetBusJourneys
 {
-    public class BusJourneysResponseDto : BusJourneysResponse<BusJourneysData>
+    public class BusJourneysRequestScreenDto
     {
-
+        public int OriginId { get; set; }
+        public int DestinationId { get; set; }
+        public string DepartureDate { get; set; }
     }
 
-    public class BusJourneysResponse<T>
+    public class BusJourneysResponseScreenDto
     {
-        //Header
+        public int OriginId { get; set; }
         public string OriginName { get; set; }
+        public int DestinationId { get; set; }
         public string DestinationName { get; set; }
         public DateTime DepartureDate { get; set; }
-        //Header
-
-        public T[] Data { get; set; }
+        public BusJourneysResponseDto[] Data { get; set; }
     }
 
-    public class BusJourneysData
+    public class BusJourneysResponseDto
     {
         //Data per boxes
         public int Id { get; set; }
@@ -30,6 +31,14 @@ namespace OBilet.Core.DTO.GetBusJourneys
         public int PartnerId { get; set; }
         public string PartnerName { get; set; }
 
+        public int Rank { get; set; }
+
+        public BusJourney Journey { get; set; }
+        //Data per boxes
+    }
+
+    public class BusJourney
+    {
         public string Origin { get; set; }
         public string Destination { get; set; }
 
@@ -38,6 +47,5 @@ namespace OBilet.Core.DTO.GetBusJourneys
 
         public decimal OriginalPrice { get; set; }
         public decimal InternetPrice { get; set; }
-        //Data per boxes
     }
 }

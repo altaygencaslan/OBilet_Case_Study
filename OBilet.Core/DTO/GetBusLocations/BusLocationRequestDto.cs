@@ -9,6 +9,6 @@ namespace OBilet.Core.DTO.GetBusLocations
     public class BusLocationRequestDto
     {
         public string Data { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

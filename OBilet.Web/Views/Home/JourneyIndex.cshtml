@@ -1,14 +1,17 @@
-﻿@{
+﻿@model BusJourneysResponseScreenDto
+@{
     Layout = "_JourneyLayout";
 }
 
 @section header{
     <div class="row mx-3">
         <div class="col-sm-1">
-            <i class="fa-solid fa-arrow-left iconTheme-Journey"></i>
+            <a href="@Url.Action("Index","Home", new { _originId = Model.OriginId, _destinationId = Model.DestinationId, _departureDate = Model.DepartureDate })">
+                <i class="fa-solid fa-arrow-left iconTheme-Journey"></i>
+            </a>
         </div>
         <div class="col-sm-11 headermaintext-journey">
-                İstanbul Avrupa - Ankara
+            <span>@Model.OriginName</span> - <span>@Model.DestinationName</span>
         </div>
     </div>
     <div class="row mx-3">
@@ -16,51 +19,56 @@
             &nbsp;
         </div>
         <div class="col-sm-11 headersubtext-journey">
-                25 Ekim Perşembe
+            <span>@Model.DepartureDate.ToString("dd MMMM dddd")</span>
         </div>
     </div>
 }
 
-
 <div class="container mt-5">
-    <div class="card cardTheme-journey mt-5">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-10">
-                    <div class="row cardtitle-journey">
-                        <div class="col-sm-2">
-                            KALKIŞ
+    @foreach (var item in Model.Data)
+    {
+        <div class="card cardTheme-journey mt-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="row cardtitle-journey">
+                                    <span>KALKIŞ</span>
+                                </div>
+                                <div class="row carddeparture-journey">
+                                    @item.Journey.Departure.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row cardarrow">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="row cardtitle-journey">
+                                    <span>VARIŞ</span>
+                                </div>
+                                <div class="row carddeparture-journey">
+                                    @item.Journey.Arrival.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-1">
-                            &nbsp;
-                        </div>
-                        <div class="col-sm-2">
-                            VARIŞ
-                        </div>
-                    </div>                    
-                    <div class="row carddeparture-journey">
-                        <div class="col-sm-2">
-                            09:30
-                        </div>
-                        <div class="col-sm-1">
-                            >
-                        </div>
-                        <div class="col-sm-2">
-                            15:30
+                        <div class="row cardorigitntodestination-journey">
+                            @item.Journey.Origin - @item.Journey.Destination
                         </div>
                     </div>
-                    <div class="row cardorigitntodestination-journey">
-                        <div class="col">
-                            Esenler Otogarı - Ankara Aşti Otogar
+                    <div class="col-sm-2">
+                        <div class="bg-danger badge-currency">
+                            @item.Journey.InternetPrice <span>TL</span>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="bg-danger badge-currency">
-                        75,00 TL
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    }
 </div>
