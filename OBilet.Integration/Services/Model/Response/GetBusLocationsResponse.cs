@@ -51,7 +51,7 @@ namespace OBilet.Integration.Services.Model.Response
         //public string ReferenceCountry { get; set; }
 
         [JsonPropertyName("country-id")]
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
 
         [JsonPropertyName("keywords")]
         public string Keywords { get; set; }

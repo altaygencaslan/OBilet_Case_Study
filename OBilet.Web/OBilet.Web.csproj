@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="UAParser" Version="3.1.47" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OBilet.Core\OBilet.Core.csproj" />
   </ItemGroup>
 
