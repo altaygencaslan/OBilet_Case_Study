@@ -9,6 +9,7 @@ namespace OBilet.Core.DTO.GetBusLocations
     public class BusLocationsResponseDto
     {
         public int Id { get; set; } //Seçim için
+        public string Name { get; set; }
         public string LongName { get; set; } //UI için
         public int? Rank { get; set; } //Sıralam için
         public string Keywords { get; set; } //Arama için

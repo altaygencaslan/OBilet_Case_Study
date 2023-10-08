@@ -23,8 +23,8 @@ namespace OBilet.Integration.Services.Model.Response
         //[JsonPropertyName("type")]
         //public string Type { get; set; }
 
-        //[JsonPropertyName("name")]
-        //public string Name { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         //[JsonPropertyName("geo-location")]
         //public GeoLocation GeoLocation { get; set; }
