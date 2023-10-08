@@ -33,7 +33,7 @@ namespace OBilet.Web.Controllers
             var port = Request.HttpContext.Connection.RemotePort;
 
             var userAgent = HttpContext.Request.Headers.UserAgent;
-            var uaParser = Parser.GetDefault();
+            var uaParser = Parser.GetDefault(); //uaParser NUGET eklentisi indirildi.
             ClientInfo c = uaParser.Parse(userAgent);
 
             return new SessionRequestDto
@@ -70,26 +70,32 @@ namespace OBilet.Web.Controllers
                 }
                 else
                 {
-                    searchModel.OriginId = _busLocations.FirstOrDefault(f => f.Rank == 1)?.Id ?? 0;
-                    searchModel.DestinationId = _busLocations.FirstOrDefault(f => f.Rank == 3)?.Id ?? 0;
-                    searchModel.DepartureDate = DateTime.Now.AddDays(1).ToString("dd.MM.yyyy");
+                    if (_busLocations.Length > 0)
+                    {
+                        var topTwoLocations = _busLocations.Where(w => w.Rank.HasValue)
+                                                           .DistinctBy(d => d.CityId)
+                                                           .OrderBy(o => o.Rank)
+                                                           .Take(2)
+                                                           .ToList();
 
+                        searchModel.OriginId = topTwoLocations.First().Id;
+                        searchModel.DestinationId = topTwoLocations.Last().Id;
+                    }
+
+                    searchModel.DepartureDate = DateTime.Now.AddDays(1).ToString("dd.MM.yyyy");
                 }
             }
 
             return searchModel;
         }
 
-        public async Task<GeneralResponse<BusLocationsResponseDto[]>> GetBusLocationsTryGetCache(bool fromCache = true)
+        public async Task<GeneralResponse<BusLocationsResponseDto[]>> GetBusLocationsTryGetCache()
         {
             GeneralResponse<BusLocationsResponseDto[]>? busLocationsResponse = null;
-            if (fromCache)
+            _memoryCacheManager.TryGetValue("BusLocationsResponseDto", out busLocationsResponse);
+            if (busLocationsResponse != null)
             {
-                _memoryCacheManager.TryGetValue("BusLocationsResponseDto", out busLocationsResponse);
-                if (busLocationsResponse != null)
-                {
-                    return busLocationsResponse;
-                }
+                return busLocationsResponse;
             }
 
             busLocationsResponse = await _oBiletManager.GetBusLocationsAsync(new GeneralRequestDto<BusLocationRequestDto>
@@ -103,7 +109,6 @@ namespace OBilet.Web.Controllers
             });
 
             _memoryCacheManager.SetWithExpire("BusLocationsResponseDto", busLocationsResponse);
-
             return busLocationsResponse;
         }
     }

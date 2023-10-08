@@ -44,8 +44,8 @@ namespace OBilet.Integration.Services.Model.Response
         //[JsonPropertyName("reference-code")]
         //public string ReferenceCode { get; set; }
 
-        //[JsonPropertyName("city-id")]
-        //public int CityId { get; set; }
+        [JsonPropertyName("city-id")]
+        public int? CityId { get; set; }
 
         //[JsonPropertyName("reference-country")]
         //public string ReferenceCountry { get; set; }
@@ -56,8 +56,8 @@ namespace OBilet.Integration.Services.Model.Response
         [JsonPropertyName("keywords")]
         public string Keywords { get; set; }
 
-        //[JsonPropertyName("city-name")]
-        //public string CityName { get; set; }
+        [JsonPropertyName("city-name")]
+        public string CityName { get; set; }
 
         //[JsonPropertyName("languages")]
         //public string Languages { get; set; }
