@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 using OBilet.Core.Business.Abstract;
 using OBilet.Core.DTO.Base;
 using OBilet.Core.DTO.GetBusJourneys;
@@ -20,26 +21,21 @@ namespace OBilet.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IOBiletManager _oBiletManager;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IMemoryCache _memoryCache;
 
-        public HomeController(ILogger<HomeController> logger, IOBiletManager oBiletManager, IHttpContextAccessor contextAccessor)
+        public HomeController(ILogger<HomeController> logger, IOBiletManager oBiletManager, IHttpContextAccessor contextAccessor, IMemoryCache memoryCache) : base(contextAccessor)
         {
             _logger = logger;
             _oBiletManager = oBiletManager;
             _contextAccessor = contextAccessor;
+            _memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> IndexAsync(int? _originId, int? _destinationId, DateTime? _departureDate)
         {
-            var busLocationsResponse = await _oBiletManager.GetBusLocationsAsync(new GeneralRequestDto<BusLocationRequestDto>
-            {
-                SessionRequest = GetSessionDefault(),
-                RequestItem =
-                new BusLocationRequestDto
-                {
-                    Date = DateTime.Now,
-                }
-            });
+            bool isRedirected = _originId.HasValue;
 
+            var busLocationsResponse = await GetBusLocationsTryGetCache(isRedirected);
             if (!busLocationsResponse.IsSuccess)
             {
                 return View();
@@ -69,35 +65,6 @@ namespace OBilet.Web.Controllers
             return View(model);
         }
 
-        private BusLocationSearchModel GetFromCacheOrParam(int? _originId, int? _destinationId, DateTime? _departureDate, BusLocationsResponseDto[] _busLocations)
-        {
-            BusLocationSearchModel searchModel = new BusLocationSearchModel();
-
-            if (_destinationId.HasValue && _originId.HasValue && _departureDate.HasValue)
-            {
-                searchModel.OriginId = _destinationId.Value;
-                searchModel.DestinationId = _originId.Value;
-                searchModel.DepartureDate = _departureDate.Value.ToString("dd.MM.yyyy");
-            }
-            else
-            {
-                var searchModelJSON = _contextAccessor.HttpContext.Session.GetString("BusLocationSearchModel");
-                if (!string.IsNullOrEmpty(searchModelJSON))
-                {
-                    searchModel = JsonSerializer.Deserialize<BusLocationSearchModel>(searchModelJSON);
-                }
-                else
-                {
-                    searchModel.OriginId = _busLocations.FirstOrDefault(f => f.Rank == 1)?.Id ?? 0;
-                    searchModel.DestinationId = _busLocations.FirstOrDefault(f => f.Rank == 3)?.Id ?? 0;
-                    searchModel.DepartureDate = DateTime.Now.AddDays(1).ToString("dd.MM.yyyy");
-
-                }
-            }
-
-            return searchModel;
-        }
-
         [HttpPost]
         public async Task<IActionResult> IndexAsync(BusLocationSearchModel model)
         {
@@ -114,6 +81,23 @@ namespace OBilet.Web.Controllers
                 });
             }
 
+
+            var busLocationsResponse = await GetBusLocationsTryGetCache();
+            model.OriginLocations = busLocationsResponse.Data.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.LongName,
+                Selected = s.Id == model.OriginId
+            })
+                .ToArray();
+
+            model.DestinationLocations = busLocationsResponse.Data.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.LongName,
+                Selected = s.Id == model.DestinationId
+            })
+                .ToArray();
             return View(model);
         }
 
@@ -135,16 +119,43 @@ namespace OBilet.Web.Controllers
                 return View();
             }
 
+            var busLocationsResponse = await GetBusLocationsTryGetCache();
+
             BusJourneysResponseScreenDto response = new BusJourneysResponseScreenDto();
             response.Data = journeysResponse.Data.OrderBy(o => o.Rank).ToArray();
             response.OriginId = model.OriginId;
+            response.OriginName = busLocationsResponse.Data?.FirstOrDefault(f => f.Id == model.OriginId)?.Name ?? "OriginName";
             response.DestinationId = model.DestinationId;
-            response.OriginName = "OriginName";
-            response.DestinationName = "DestinationName";
+            response.DestinationName = busLocationsResponse.Data?.FirstOrDefault(f => f.Id == model.DestinationId)?.Name ?? "DestinationName";
             response.DepartureDate = DateTime.Parse(model.DepartureDate);
 
             return View(response);
         }
 
+        private async Task<GeneralResponse<BusLocationsResponseDto[]>> GetBusLocationsTryGetCache(bool fromCache = true)
+        {
+            GeneralResponse<BusLocationsResponseDto[]> busLocationsResponse;
+            if (fromCache)
+            {
+                _memoryCache.TryGetValue("BusLocationsResponseDto", out busLocationsResponse);
+                if (busLocationsResponse != null)
+                {
+                    return busLocationsResponse;
+                }
+            }
+
+            busLocationsResponse = await _oBiletManager.GetBusLocationsAsync(new GeneralRequestDto<BusLocationRequestDto>
+            {
+                SessionRequest = GetSessionDefault(),
+                RequestItem =
+                new BusLocationRequestDto
+                {
+                    Date = DateTime.Now,
+                }
+            });
+
+            _memoryCache.Set("BusLocationsResponseDto", busLocationsResponse);
+            return busLocationsResponse;
+        }
     }
 }

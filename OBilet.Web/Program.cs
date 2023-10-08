@@ -16,7 +16,7 @@ builder.Services.AddScoped<IOBiletService, OBiletService>();
 builder.Services.AddScoped<IOBiletManager, OBiletManager>();
 //Dependencies
 
-//ClientSide Caching
+//ClientSide data
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -25,7 +25,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromHours(1);
     options.Cookie.IsEssential = true;
 });
-//ClientSide Caching
+//ClientSide data
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
