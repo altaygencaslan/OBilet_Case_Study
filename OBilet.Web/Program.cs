@@ -1,5 +1,7 @@
 using OBilet.Core.Business.Abstract;
 using OBilet.Core.Business.Concrete;
+using OBilet.Core.Cache.Abstract;
+using OBilet.Core.Cache.Concrete;
 using OBilet.Integration.Services.Abstract;
 using OBilet.Integration.Services.Concrete;
 
@@ -11,9 +13,10 @@ builder.Logging.AddConsole();
 //Logging
 
 //Dependencies
-builder.Services.AddScoped<IApiHelper, ApiHelper>();
+builder.Services.AddTransient<IApiHelper, ApiHelper>();
 builder.Services.AddScoped<IOBiletService, OBiletService>();
 builder.Services.AddScoped<IOBiletManager, OBiletManager>();
+builder.Services.AddSingleton<IMemoryCacheManager, MemoryCacheManager>();
 //Dependencies
 
 //ClientSide data
