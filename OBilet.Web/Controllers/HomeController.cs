@@ -104,6 +104,8 @@ namespace OBilet.Web.Controllers
 
         public async Task<IActionResult> JourneyIndexAsync(BusJourneysRequestScreenDto model)
         {
+            throw new Exception("test");
+
             var journeysResponse = await _oBiletManager.GetJourneysAsync(new GeneralRequestDto<BusJourneysRequestDto>
             {
                 SessionRequest = GetSessionDefault(),
