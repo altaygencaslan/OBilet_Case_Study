@@ -4,6 +4,7 @@ using OBilet.Core.Cache.Abstract;
 using OBilet.Core.Cache.Concrete;
 using OBilet.Integration.Services.Abstract;
 using OBilet.Integration.Services.Concrete;
+using OBilet.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".obilet.casestudy.session";
-    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.IdleTimeout = TimeSpan.FromDays(1);
     options.Cookie.IsEssential = true;
 });
 //ClientSide data
@@ -47,6 +48,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
+
+app.UseMiddleware<GlobalExceptionHandling>();
 
 app.MapControllerRoute(
     name: "default",

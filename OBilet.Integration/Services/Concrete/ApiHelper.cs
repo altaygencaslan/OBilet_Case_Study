@@ -48,7 +48,7 @@ namespace OBilet.Integration.Services.Concrete
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Post get error with Request {JsonSerializer.Serialize(data)}, Error: {JsonSerializer.Serialize(ex)}");
+                _logger.LogError($"Post get error with Request {JsonSerializer.Serialize(data)}, Error: {ex.ToString()}");
                 return new GeneralResponse<T>();
             }
         }
