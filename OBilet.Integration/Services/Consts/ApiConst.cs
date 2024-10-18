@@ -8,6 +8,6 @@ namespace OBilet.Integration.Services.Consts
 {
     public class ApiConst
     {
-        public static string KeyVal => "Basic JEcYcEMyantZV095WVc3G2JtVjNZbWx1";
+        public static string KeyVal => "Basic "; //AuthKEY
     }
 }
