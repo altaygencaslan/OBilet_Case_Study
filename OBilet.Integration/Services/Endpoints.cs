@@ -8,9 +8,9 @@ namespace OBilet.Integration.Services
 {
     public class Endpoints
     {
-        public static string BaseApiUrl => "https://v2-api.obilet.com/";
-        public static string GetSessionEndPoint => "api/client/getsession/";
-        public static string GetBusLocationsEndPoint => "api/location/getbuslocations";
-        public static string GetBusJourneysEndPoint => "api/journey/getbusjourneys";
+        public static string BaseApiUrl => "";
+        public static string GetSessionEndPoint => "";
+        public static string GetBusLocationsEndPoint => "";
+        public static string GetBusJourneysEndPoint => "";
     }
 }
